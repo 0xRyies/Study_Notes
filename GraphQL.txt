@@ -1,0 +1,28 @@
+- graphql schema and introspection
+- bypass schema{} filter with schema%0A{}
+- use aliases to bypass rate limits : 
+	- login1: login(input:{password: "a", username: "a"})
+	  login2: login(input:{password: "b", username: "a"})....etc
+- change the content-type to application/x-www-form-urlencoded to test for CSRF
+
+
+
+payloads : 
+{__schema}
+{__schema{types{name,fields{name}}}}
+
+
+
+
+Mitigations :
+1- disable introspection 
+2- if it's used publicly then check that the API's schema doesn't expose any sensetive fields to the public
+3- disable suggestions 
+4- for bruteforcing : 
+	1- Limit the query depth = limit the number of nested queries
+	2- Configure operation limits = maximum number of unique fields
+	3- Configure the maximum amount of bytes a query can contain
+	4- implementing cost analysis on API = if a query is too complex it will drop
+5- for CSRF :
+	1- accept only JSON encoded POST
+	2- apply a secure CSRF mechanism
